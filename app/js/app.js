@@ -10,6 +10,8 @@ function ApplicationConfig($routeProvider) {
   })
 }
 
-function MyController() {
-
+function MyController($firebaseObject) {
+  var rootRef = new Firebase('https://bouldercodeplus.firebaseio.com/')
+  var davidRef = rootRef.child('users').child('david');
+  this.user = $firebaseObject(davidRef);
 }
