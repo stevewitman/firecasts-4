@@ -13,15 +13,16 @@ function ApplicationConfig($routeProvider) {
   })
 }
 
-function Users(rootRef, $firebaseObject) {
+function Users(rootRef, $firebaseObject, $firebaseArray) {
   var usersRef = rootRef.child('users');
   this.get = function get(id) {
-    return $firebaseObject(usersRef.child(id))
+    return $firebaseObject(usersRef.child(id));
+  }
+  this.all = function all() {
+    return $firebaseArray(usersRef);
   }
 }
 
 function MyController(users) {
-  this.user = users.get('david');
-  console.log(this.user);
-  console.log(this.user.name);
+  this.users = users.all();
 }
