@@ -1,5 +1,8 @@
 angular
   .module('app', ['ngRoute', 'firebase'])
+  .constant('FirebaseUrl', 'https://bouldercodeplus.firebaseio.com')
+  .service('rootRef', ['FirebaseUrl', Firebase])
+  .service('users', Users)
   .controller('MyCtrl', MyController)
   .config(ApplicationConfig);
 
@@ -10,8 +13,15 @@ function ApplicationConfig($routeProvider) {
   })
 }
 
-function MyController($firebaseObject) {
-  var rootRef = new Firebase('https://bouldercodeplus.firebaseio.com/')
-  var davidRef = rootRef.child('users').child('david');
-  this.user = $firebaseObject(davidRef);
+function Users(rootRef, $firebaseObject) {
+  var usersRef = rootRef.child('users');
+  this.get = function get(id) {
+    return $firebaseObject(usersRef.child(id))
+  }
+}
+
+function MyController(users) {
+  this.user = users.get('david');
+  console.log(this.user);
+  console.log(this.user.name);
 }
